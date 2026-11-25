@@ -1,0 +1,204 @@
+﻿param(
+    [Parameter(Position=0)]
+    [string]$Path
+)
+
+if ([string]::IsNullOrWhiteSpace($Path)) {
+    $Path = Read-Host "Enter the directory to verify"
+}
+if (-not (Test-Path -LiteralPath $Path -PathType Container)) {
+    Write-Error "Directory not found: $Path"
+    exit 2
+}
+$Root = (Resolve-Path -LiteralPath $Path).Path
+
+$ManifestText = @'
+d0d5e4777460045916046619cd0fd433aa251d4a74f4d91e83987588f907f80c
+431bdd2e26c0c8214fd7601140eb9fe6d8a249f5000539453a9a9b6a0b7c0ee8
+faff02f294a7e9149ce079dffe3dedbcabe99b1f180ab14222aa8689e00a75fa
+7f5c53162ab66a8915dfc95ddf22aad9055635b6ddd3cffc40f431e24ea1c189
+d9d4d2ddcd23e73a8862fbb5d5b53ca259e454f90319910d88f3a5c8da212535
+662a05d05f8449b94b2ffc052f2a9ad2c090b3708d5a274fc9b2db0e14b03a34
+883581135f2fb0ba7ec5068da6f89363951400d4d3f9c0b99c06ac7eef24134a
+9eaf045d004cd7d6a8382aaff0c6ea23a29fec4ef8bfacd726b54f5bc26fafd0
+4afbdbe22aad2bc338a5ba1ffe83cccb96e072eb4e92f6a5dd90b49b2e227c59
+31dc6aa5394dd8cd3c83b90c9661f37325f22851cc6d5d7150e11041c7618ced
+554168b99726cbe982b542ec97c493f48483b20a4ea4e54e102ba3a0d098e75f
+0b23f3f4ea9f63d8bb8abd835fb15b584fbc63a2b2f9cdbb6f675d78db16cb7e
+5f109fcd493235e271c0106c9da92a27de1e48d809a18a5d2af8c2183bb23516
+3598c14ad6b1df887b21b3f8685be2ab8a060264ca3f8db3829d3f4bc0863b8c
+b8616380028bb8fe027c46c0a225793e5814a6639afb9d90dede4acabfde2004
+d284d983873bc726b68c36ea85d0fd8c3a7c8ae58be049c981218eed00f614ba
+87727791b5026439d8f0b3bcceeae02b074fda9670270cac9bc248ffac16e3ca
+d672e99c248b943c3a3acb694eb16fe6236d3d9d04c86451cf68259ca68d4409
+df9f32bb42168ac0abf9e44573d837186107d5d3dc926a0cf597750f6cae112f
+2ca6dd82a842990b6a2c3440936b443808a6d98bf6b540048978591bdc23b7c0
+f90577103ef7986ba7ae4d190782bf73378d4e0e5be6f9664ea3fc3f3088255e
+ccc48a1662467b78423d3f83220e3bc4f4ae36c32a873d09344d48c1faab9760
+16229da15fb88d8a76dceadfb0cacb852144878960a7584b3345051d351c9c3c
+b852c332f5474a3631e13c708f2233b27668065d8a9ee751155efb98e27a3a6e
+27be3cf33f23326b9dec29692788e8ee75f73ce0050c23307600dbd067964de5
+31246c91ea208b2b58809cb5bd82c5e0c044c88ae4198831aab727584675b0f3
+baf71941408cf65f9aed0335a737783f62ca1899f863322d89f9a990bcb7f0e3
+5c622d5a00f0f84125edc3c84061a4f97d57dd695ec6a286657f7135445cb3c6
+aeabd38813f8af5582aad43e84b0a0262ef187d03115483764433ad5b1f848df
+0c7ad96cf458be86c38f1cbdbc067f93ea444eda4a88c72b16d0ecdfcc91e311
+73891cde5598e26e4dda53971d45d91c749e3d54dc2afe93bee9885344ea3dde
+b37dcb845e9143409879de2b7fddf82d38a736d07041082648a7f718f9583faa
+8ebca98d174266f5cf18cb50cc3c5ca5e7ecdbc84604f352bb6ff4fb05f9c2ef
+3f9d03d67978f5454a927266c7f866f20c700bb753a83f5cbc7182a398618eeb
+03a7d6dd60da98871228b1ec06a93d4a00387143dd20f123c0408087385f203c
+8e620456a4a296faf8be5632a8d929df590be1efeee7d5ce34059726a0ac65f4
+3cba53b0fa123e39597e8331fe4b432294fcf32baebb94f9db47a52f1b46ac4d
+6999079496270431dfb6df46a6406f721cfb4331e418bab6c6facb962f4d288f
+7633d784b6e77258f8d576777633fc72eebbff004c1640ee27d53773ced83639
+6de6efac9d3d7b862548b3d0aee352b086c2e01ebcf8cda8ede617afb495187f
+e1f5139ed75d6781754737cf277981aa5c3afea5d2d06e7dcd57a36fb4ff505c
+40b157a43413359fafef667aab1a6ec53d2c078c50fe24292678c3d1b33ede9a
+5799083008834d706e6b3606b647abfbfa6068574c96f3803ad957013bb4eb1a
+18c6ce167de25a1cea110401da7c2ce679106f7766df0b7af2668cba7a1ab25b
+60bcba6a7f3a658cec51232cc48098cf86a6e54d37f21ab9401b2a76e2a6ea53
+553961eff42fb8deb7cf7330d303e843b88ab29c87ab30b85cdd0c0501d1fc14
+dc887908067d49d9bd05c40029f7248a6bbf76fe79f34abea0199dd6a7edf244
+30a3020d15d4d159b06aa9fd31508a534c79d9990de215bf20d2572ec2713995
+1e0afca572034adebc2899e733546fb12a620acd10b32a4c21fbcc5926abed69
+3e64d01e062ed55d290aaf3a7b9694d562a8591cf461e638dd135d388d4b5e5c
+dc983ed7f6b78d1693fa5757f17c03bafb790e851594fdf4d412579b61d867f6
+02add8dc1c4f8f485ef8abc5b4480b746e24fa4a546eb488ec37ff1b4d3c4e34
+0e90a8dbda5e32fb6c47a4ecabf821451a59abd349755c8030c380d4a9e9f834
+a3aae83237fedd1f7c32e8ab2adc8bf9a87d8b019a2242c5181547714b00f8cc
+7625184c4e9c899f3b708b88d61fa2e12b836db63640385cecd750cb30c8f26e
+41c4fc92143fc26e44dcb4ca93142b914f9ac1188f9b53cbf8db27c6a97b6d4c
+7cae5a1ce890e7a4d452387f4dcb4ebde8e3e3b905409d7ed33903203a348ba5
+e5af629ef458bb7be55cae3dc890c69613c8028060ac765d54a4ccd73991640c
+d02ff50ae9164e540ce55b60b2f128b5c78bab6bace6e5eee46e584438d9af36
+e95020b2fa4a721db3df59fdecf75621730ac559d8835252f6c3b658d5a08993
+2eeb9b05047f83c8bc82fcee7646e7d675266f4545f940593a6b56e92358663d
+9d1b1bd70659a32dc6259fc890dbc3e167dd3f9253f41000a3c9aa7c17539c47
+14d97b3d071e0ce461e758dbcf1511941ae5c0bdd6e32ed33cb87aaae0414d3a
+27735d6ca90ff4eb8f432e3d3e701fd85f75303f1adade2cdbc4bef165159a0a
+a0647c0325333dd42b25b00d85ee9b3915a55ce99127b97ef00662ef4866cba4
+6036fdb3ee3a5813ef0b17462219ebcee5f06b46ef738bacde07aa797e6d2b75
+c56b530e0894d9c4d11b12d389786fef40463dbd81d4438b8414f909d6226211
+276813083c55c079120e0db49898088bb0c8d1c912ed59ec0d00fedf56a694a8
+b7f879662095f71dc08efcbc0d24ac3c0ff2dde8d475f92f5c5646a39bf8f2c3
+89cf5b07b98709277e8511d9a402ce72279e8df3ae24a8dd641ab0265c799a0c
+30f8d4ebc0fd1d9f786cd50627a7bd3bd537288707606a18815a6440da8e3109
+a316887568569127e4ebb0053de11b9cefa4305ce6199fb85b5acc62bfa2ff5a
+6ca2574aa699b4583f110c6b3e3ae605a6a0ca8c36d65769f76e3beb58e93751
+a28e53eee58e0b7541bee699ca0136d7a8402934984fe1d12d573905a24da5f0
+b3514f9b1fe258141f7b5d840fc753e980a2af59749a1f8d4de0867e93cf5c97
+eaf45801f0a0b0407ff41d5e840a27f9cfce144e1a4798ca293003a484e2c0ee
+81da4d1904dd038ea59fb5d7b851e2a15b1906a5ff3017f1bd15dd617d46c3dc
+9df804569a50dfe7d1a0f8ef71fa9a117a370616159489e9028f5acfd5118d66
+6434287056329e60a4ca7ae26fabf91dc3ccf3b738130033400fb88ab42da8cf
+6eb47c010bb6bf69f50d69675e50415d345468f3a1193fdf7ab4e54a4d7d6c56
+9bfb5f4b85be2f6d1d93b2ed83df94a2021346448816b61fd9c08d7d05b8a43c
+873a8c7634eacaa062a1bc48888908f3e2d3196159b9fa39e83eb6cfc18dbb06
+0354565963b8472bf2f606dc1a4089c14f45cb5ecd416984f5e4212009eb7e74
+badd8f4b3a4e65bc492d2933d0c82239653467317c606c483e616979a5ec5967
+9525a81d18b922ba5859643883d466f08442f779b7c92a7eaaefde3766292a96
+8e362c1f39383d6ff97eeffbf963602e9ed2e2b97b707e54a3884fe7c8dd408d
+4794cbff80790c7a0b3d2959f3831b53e90c5b56b9bdb61814f98f29a4e4157f
+79612738f51faa724cb6d30ad5465419f3038d4b3498115ec1306b0ad7d71f1c
+4d7f87158a1be7e5e4f15ef195ddaa804be94d2ecaafaa9172150f7b6b8abf94
+fb30232fd94ccfdb2b85bb8deae860b7c449348f2b4a8c38d9395de1ad00b8fb
+b9f86219f835c769ca86274f933ab35423af45dad33f130d5c5e4727450ffd24
+f972251e4369d634419e33d2b2b6196f310e70af521dd0c9f00025d0c1c0e6ca
+ed6c55c60112704f7e551cfbb2446f7f069bfd7caa1c257bc427595cf7434651
+1a91d1a8de2fa9bffafcfbdb0f4c1a8a02294647eec71385baa70b8d1e4a165e
+c4d7e75f867c8527eee75135cd400e22f7c770c159c6bc2c3f80ec0f6e6a8dbb
+0bc1634594e51ca8e7ef5f2bc6f5b32b081ce779ac094d686de08ecb75dc24a8
+dc1957ec85d89b1b55cd1fdc5c3997f48d1e0bff9020ec2842120ab34e71c83e
+5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9
+79ee6fa49aa2c6f0dfbc1279273fd619e1a9285995ff53a8bc183000c8895b91
+91e249c0f66f827bcacd0be4931b1cec3e4907cc05ea0a5bcd83696c70908963
+9385104cc3e031dbbcb63f156134a0f6afff455e0ff6887f5a9e1c5f7e2706b0
+0dbd6859f825ab8acab1fa25b6bd1a091d35ca2dbe3185c1187192f2d2ac8154
+99f803ac22c01ef329dddb1d40be67238d2a812d01e8d040b3cb5135bc23707e
+21a652895663671afef4e947cc8ced47ca66ec00f4b27059c17bef6965a506ca
+072c08f82513a8f6a392dd8be371378333191a4aabbc5b6a1fedfe7dbc850916
+b5ac80b8d43bc23c9de0593fad04a7eafa5106ed405eeb5db40ad9b37642d535
+006999d45faf184bf669610f364b9551874d0fdb154e36ce34e622a300d025da
+0fa110ecac0a5fac8294921132cc8322440bdf93e74e723eb63eae0143d58e58
+d11ba4e4a07f42f8d80c48553c5c2588ab4114ecdbe023305f5f8fa8262131f8
+'@
+
+$Remaining = @{}
+foreach ($hash in ($ManifestText -split "`r?`n")) {
+    $hash = $hash.Trim().ToLowerInvariant()
+    if ($hash -match '^[0-9a-f]{64}$') {
+        if ($Remaining.ContainsKey($hash)) {
+            $Remaining[$hash]++
+        } else {
+            $Remaining[$hash] = 1
+        }
+    }
+}
+
+$Files = @(Get-ChildItem -LiteralPath $Root -File -Recurse -Force -ErrorAction SilentlyContinue)
+$Total = ($Remaining.Values | Measure-Object -Sum).Sum
+$Found = $Files.Count
+$Checked = 0
+$Matched = 0
+$Bad = 0
+
+Write-Host "Expected files: $Total"
+Write-Host "Files found:    $Found"
+Write-Host "Hashing files in: $Root"
+
+foreach ($File in $Files) {
+    $Checked++
+    $Percent = if ($Found -eq 0) { 100 } else { [int](100 * $Checked / $Found) }
+    Write-Progress -Activity "Verifying SHA-256 files" -Status "$Checked of $Found : $($File.Name)" -PercentComplete $Percent
+
+    $Output = & certutil.exe -hashfile $File.FullName SHA256 2>&1
+    $HashLine = $Output | ForEach-Object { "$_".Trim() } |
+        Where-Object { $_ -match '^[0-9a-fA-F]{64}$' } |
+        Select-Object -First 1
+
+    if (-not $HashLine) {
+        Write-Host "HASH ERROR: $($File.FullName)" -ForegroundColor Red
+        $Bad++
+        continue
+    }
+
+    $Actual = $HashLine.ToLowerInvariant()
+    if ($Remaining.ContainsKey($Actual) -and $Remaining[$Actual] -gt 0) {
+        $Remaining[$Actual]--
+        $Matched++
+    } else {
+        Write-Host "UNEXPECTED HASH: $($File.FullName)" -ForegroundColor Red
+        Write-Host "  SHA256: $Actual"
+        $Bad++
+    }
+}
+Write-Progress -Activity "Verifying SHA-256 files" -Completed
+
+$Missing = 0
+foreach ($Hash in $Remaining.Keys) {
+    $Count = $Remaining[$Hash]
+    if ($Count -gt 0) {
+        Write-Host "MISSING EXPECTED HASH: $Hash (count: $Count)" -ForegroundColor Yellow
+        $Missing += $Count
+    }
+}
+
+$Extra = [Math]::Max(0, $Found - $Total)
+
+Write-Host ""
+Write-Host "===== Verification summary ====="
+Write-Host "Expected hashes:  $Total"
+Write-Host "Files found:      $Found"
+Write-Host "Matched hashes:   $Matched"
+Write-Host "Unexpected files: $Bad"
+Write-Host "Missing hashes:   $Missing"
+Write-Host "Extra file count: $Extra"
+
+if ($Bad -eq 0 -and $Missing -eq 0 -and $Found -eq $Total) {
+    Write-Host "RESULT: PASS - all file hashes match." -ForegroundColor Green
+    exit 0
+} else {
+    Write-Host "RESULT: FAIL - differences found." -ForegroundColor Red
+    exit 1
+}
